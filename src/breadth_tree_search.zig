@@ -13,18 +13,11 @@ const Node = struct{
         .right = right,
         }; 
     }
-    pub fn get_value() u32{
-        return .value;
-    }
+
 };
 
-pub fn create_tree() Node{
-
-
-}
     var buffer = std.ArrayList(?*Node)
         .init(allocator);
-
 pub fn main() !void{
     var root = Node.init(5, null, null);
     var branch_1_left = Node.init(4, null, null);
@@ -39,15 +32,17 @@ pub fn main() !void{
     branch_2_right.left = &branch_2_1_left;
     var branch_2_2_right = Node.init(8, null, null);
     branch_2_right.right = &branch_2_2_right;
+
     var lvl: u32 = 0;
 
     try buffer.append(&root);
+    defer buffer.deinit();
 
-    while (lvl<3){
-
+    while(true){
 
         const j = buffer.items.len;
         var i: u32 = 0;
+
         while (i<j):(i+=1){
             const val = buffer.orderedRemove(0);
             try search(lvl, val);    
@@ -56,7 +51,6 @@ pub fn main() !void{
         if(buffer.items.len==0){
             break;
         }
-
     }
 }
 
@@ -71,7 +65,6 @@ pub fn search(lvl: u32, treebeard: ?*Node) !void{
         if(node.right != null){
             try buffer.append(node.right);
         }
-        
-    
+
     }
 }
